@@ -9,8 +9,8 @@ local pairs = pairs
 local string = require("string")
 local table = require("table")
 
-local COMMAND_MAP_NETWORK = "nmap-auto-wrapper"
-local COMMAND_SCAN_HOST = "nmap-auto-scanner"
+local COMMAND_MAP_NETWORK = "nmap-auto-wrapper &"
+local COMMAND_SCAN_HOST = "nmap-auto-scanner &"
 
 module("netmntr")
 
@@ -44,7 +44,7 @@ end
 function arrayfy_by_semicolon(input)
     --This turns the output of a command into a table by splitting it along the
     --newlines.
-    local sep = ";"
+    local sep = "\;"
     local t = {};
     for str in string.gmatch(input, "([^"..sep.."]+)") do
         if string.match(str,"\*") then
@@ -62,11 +62,22 @@ function get_nearby_hosts()
     return result_array
 end
 
-function generate_widget_map(){
+function generate_widget_map()
 	local attached_hosts = {}
+	local count = 0
 	for key, host in pairs(get_nearby_hosts()) do
 		w = arrayfy_by_whitespace(host)
-		work = "ping -c 1 " .. w[1]
-		table.insert(attached_hosts, work)
+		if host ~= "" then
+			if w[1] ~= nil then
+				work = terminal .. " ping -c 1 " .. w[1];
+			else
+				work = terminal .. " ping -c 1 duckduckgo.com"
+			end
+			device = {host, work}
+			table.insert(attached_hosts, device)
+		end
+		count = count + 1
 	end
-}
+	table.remove(attached_hosts, count)
+	return attached_hosts
+end

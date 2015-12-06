@@ -12,7 +12,7 @@ local calladuran = require("calladuran")
 -- Notification library
 local naughty = require("naughty")
 local menubar = require("menubar")
--- NetworkManager library
+-- Network Monitor widget
 require("netmonitor.boddy")
 -- Load Debian menu entries
 require("debian.menu")

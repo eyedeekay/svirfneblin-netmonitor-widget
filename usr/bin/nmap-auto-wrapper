@@ -1,8 +1,12 @@
 #! /bin/bash
 
-. monitor_functions/nmap-auto-functions
+if [ -f ./monitor_functions/nmap-auto-functions ]; then
+	. ./monitor_functions/nmap-auto-functions
+else
+	. /usr/bin/monitor_functions/nmap-auto-functions
+fi
 
 SCAN_RANGE=$(get_range)
 NMAP_RESULT=$(get_hostlist)
 
-echo $NMAP_RESULT
+echo " $NMAP_RESULT"
