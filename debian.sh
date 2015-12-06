@@ -23,13 +23,15 @@ rm -rf $DEBFOLDERNAME
 mkdir $DEBFOLDERNAME
 
 # Copy your script to the source dir
-cp -R $SOURCEBINPATH/ $DEBFOLDERNAME/
+cp -R ./ $DEBFOLDERNAME/
 cd $DEBFOLDERNAME
 
 pwd
 
 # Create the packaging skeleton (debian/*)
 dh_make -s --indep --createorig 
+
+dpkg-source --commit
 
 mkdir -p debian/tmp/usr
 cp -R usr debian/tmp/usr

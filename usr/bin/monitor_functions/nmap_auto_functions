@@ -44,8 +44,9 @@ get_hostlist(){
 				[ $x -gt 3 ] && RETURN="$RETURN $subsub" && [ $x -gt 8 ] && x=-1
 				x=$((x+1))
 			done
+			RETURN="$RETURN;"
 		fi
 		c=$((c-1))
-	done	
+	done
 	echo $RETURN
 }
