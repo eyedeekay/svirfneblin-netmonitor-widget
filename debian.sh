@@ -4,7 +4,7 @@ SOURCEBINPATH=.
 SOURCEDIR=netmonitor/
 SOURCEBIN=netmonitor/boddy.lua
 IFACEBIN=nmap-auto-wrapper
-LIBFACE=monitor_functions/nmap-auto-wrapper
+LIBFACE=monitor_functions/nmap-auto-functions
 CONNBIN=nmap-auto-scanner
 SOURCEDOC=README.md
 DEBFOLDER=svirfneblin-netmonitor-widget
@@ -31,8 +31,6 @@ pwd
 # Create the packaging skeleton (debian/*)
 dh_make -s --indep --createorig 
 
-dpkg-source --commit
-
 mkdir -p debian/tmp/usr
 cp -R usr debian/tmp/usr
 
@@ -40,9 +38,11 @@ cp -R usr debian/tmp/usr
 grep -v makefile debian/rules > debian/rules.new 
 mv debian/rules.new debian/rules 
 
+dpkg-source --commit
+
 # debian/install must contain the list of scripts to install 
 # as well as the target directory
-echo etc/xdg/svirfneblin/rc.lua.pech.example etc/xdg/svirfneblin >> debian/install
+echo etc/xdg/svirfneblin/rc.lua.boddy.example etc/xdg/svirfneblin >> debian/install
 echo etc/xdg/svirfneblin/$SOURCEBIN etc/xdg/svirfneblin/$SOURCEDIR >> debian/install
 echo usr/bin/$IFACEBIN usr/bin >> debian/install
 echo usr/bin/$LIBFACE usr/bin/monitor_functions >> debian/install
@@ -73,6 +73,8 @@ Description: A network monitoring widget for awesomewm
 # Remove the example files
 rm debian/*.ex
 rm debian/*.EX
+
+dpkg-source --commit
 
 # Build the package.
 # You  will get a lot of warnings and ../somescripts_0.1-1_i386.deb

@@ -1,6 +1,6 @@
 #! /bin/bash
 
-. monitor_functions/nmap_auto_functions
+. monitor_functions/nmap-auto-functions
 
 SCAN_RANGE=$(get_range)
 NMAP_RESULT=$(get_hostlist)

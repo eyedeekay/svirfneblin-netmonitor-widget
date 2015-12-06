@@ -13,7 +13,7 @@ local calladuran = require("calladuran")
 local naughty = require("naughty")
 local menubar = require("menubar")
 -- NetworkManager library
-require("network.pech")
+require("netmonitor.boddy")
 -- Load Debian menu entries
 require("debian.menu")
 
@@ -121,19 +121,19 @@ menubar.utils.terminal = terminal -- Set the terminal for applications that requ
 -- {{{ Wibox
 
 -- create a network menu widget
-function mynetworkmenu()
-    networkmenu = awful.menu({	items = netmgr.generate_network_menu()	  })
+function mynetworkmap()
+    networkmenu = awful.menu({	items = netmntr.generate_widget_map()	  })
     return networkmenu
 end
 
 mynetworklauncher = awful.widget.launcher({ image = beautiful.awesome_icon,
-                                            menu = mynetworkmenu()})
-nettimer = timer({ timeout = 360 })
-nettimer:connect_signal("timeout", function()
-        mynetworklauncher = awful.widget.launcher({ image = beautiful.awesome_icon,
-                                                menu = mynetworkmenu()})
+                                            menu = mynetworkmap()})
+netmaptimer = timer({ timeout = 360 })
+netmaptimer:connect_signal("timeout", function()
+        mynetworkmap = awful.widget.launcher({ image = beautiful.awesome_icon,
+                                                menu = mynetworkmap()})
     end)
-nettimer:start()
+netmaptimer:start()
 
 -- Create a textclock widget
 mytextclock = awful.widget.textclock()
