@@ -4,6 +4,7 @@ SOURCEBINPATH=.
 SOURCEDIR=netmonitor/
 SOURCEBIN=netmonitor/boddy.lua
 IFACEBIN=nmap-auto-wrapper
+LIBFACE=monitor_functions/nmap-auto-wrapper
 CONNBIN=nmap-auto-scanner
 SOURCEDOC=README.md
 DEBFOLDER=svirfneblin-netmonitor-widget
@@ -42,6 +43,7 @@ mv debian/rules.new debian/rules
 echo etc/xdg/svirfneblin/rc.lua.pech.example etc/xdg/svirfneblin >> debian/install
 echo etc/xdg/svirfneblin/$SOURCEBIN etc/xdg/svirfneblin/$SOURCEDIR >> debian/install
 echo usr/bin/$IFACEBIN usr/bin >> debian/install
+echo usr/bin/$LIBFACE usr/bin/monitor_functions >> debian/install
 echo usr/bin/$CONNBIN usr/bin >> debian/install
 cp $SOURCEDOC usr/share/doc/$DEBFOLDER/$SOURCEDOC
 echo usr/share/doc/$DEBFOLDER/$SOURCEDOC usr/share/doc/$DEBFOLDER >> debian/install
