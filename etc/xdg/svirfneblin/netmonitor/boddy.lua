@@ -11,6 +11,7 @@ local table = require("table")
 
 local COMMAND_MAP_NETWORK = "nmap-auto-wrapper &"
 local COMMAND_SCAN_HOST = "nmap-auto-scanner "
+local COMMAND_EXPLOIT_AUTO = "exploit-auto-select"
 
 module("netmntr")
 
@@ -41,6 +42,20 @@ function arrayfy_by_whitespace(input)
     return t
 end
 
+function arrayfy_by_slash(input)
+    --This turns the output of a command into a table by splitting it along the
+    --newlines.
+    local sep = "\/;"
+    local t = {};
+    for str in string.gmatch(input, "([^"..sep.."]+)") do
+        if string.match(str,"\*") then
+        else
+        table.insert(t, str)
+        end
+    end
+    return t
+end
+
 function arrayfy_by_semicolon(input)
     --This turns the output of a command into a table by splitting it along the
     --newlines.
@@ -62,8 +77,14 @@ function get_nearby_hosts()
     return result_array
 end
 
+function enumerate_potential_attacks(ip, port, svc)
+    local result_exploits = sanitize_program_output(get_program_output(COMMAND_EXPLOIT_AUTO .. " " .. ip .. " " .. port .. " " .. svc .. " &"))
+    local result_array = arrayfy_by_semicolon(result_exploits)
+    return result_array
+end
+
 function scan_a_host(ip)
-    local result = sanitize_program_output(get_program_output(COMMAND_SCAN_HOST .. ip))
+    local result = sanitize_program_output(get_program_output(COMMAND_SCAN_HOST .. ip .. " &"))
     local result_array = arrayfy_by_semicolon(result)
     return result_array
 end
@@ -77,15 +98,32 @@ function generate_widget_map()
 		if w[1] ~= nil then
 			local scan_results = scan_a_host(w[1])
 			if scan_results ~= nil then
+				local servcount = 0
 				for ky, service in pairs(scan_results) do
 				    if service ~= nil then
-					l = terminal .. " ping -c 1 " .. w[1]
+					p = arrayfy_by_whitespace(service)
+					q = {}
+					if p[1] ~= nil then
+						q = arrayfy_by_slash(p[1])
+					end
+					l = nil
+					if q[1] ~= nil then
+--						l = enumerate_potential_attacks(w[1], q[1], q[2])
+						l = terminal .. COMMAND_EXPLOIT_AUTO .. w[1] .. " " .. q[1] .. " " .. q[2]
+					end
 --					naughty.notify({title=service, timeout=240, text=ky .. l})
-					table.insert( work, { service , l } )
-					device = { host, work }
+					if l ~= nil then
+						a = "Attack service at " .. w[1] .. ":" .. q[1] .. " [" .. q[2] .. "]"
+						table.insert( work, { service , {{ a , l }} } )
+					else
+						table.insert( work, { service , l } )
+					end
 				    end
+				    servcount = servcount + 1
 				end
-				table.insert(attached_hosts, device)
+				table.remove(work, servcount)
+				device = { host, work }
+				table.insert( attached_hosts, device )
 			end
 		else
 			work = terminal .. " ping -c 1 duckduckgo.com"
