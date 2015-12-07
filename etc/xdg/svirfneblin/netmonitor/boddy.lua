@@ -107,16 +107,26 @@ function generate_widget_map()
 						q = arrayfy_by_slash(p[1])
 					end
 					l = nil
+					m = {}
 					if q[1] ~= nil then
---						l = enumerate_potential_attacks(w[1], q[1], q[2])
-						l = terminal .. COMMAND_EXPLOIT_AUTO .. w[1] .. " " .. q[1] .. " " .. q[2]
+						l = enumerate_potential_attacks(w[1], q[1], p[3])
+						if l ~= nil then
+							for k, v in pairs(l) do
+								c = arrayfy_by_whitespace(v)
+								if c[3] ~= nil then
+									table.insert(m, { c[1] , c[3] .. " " .. c[2] } )
+								end
+--								l = terminal .. COMMAND_EXPLOIT_AUTO .. w[1] .. " " .. q[1] .. " " .. q[2]
+							end
+						end
 					end
---					naughty.notify({title=service, timeout=240, text=ky .. l})
-					if l ~= nil then
-						a = "Attack service at " .. w[1] .. ":" .. q[1] .. " [" .. q[2] .. "]"
-						table.insert( work, { service , {{ a , l }} } )
+					if m[1] ~= nil then
+						a = "Attack service at " .. w[1] .. ":" .. q[1] .. " [" .. p[3] .. "]"
+						table.insert( work, { service , {{ a , m }} } )
 					else
-						table.insert( work, { service , l } )
+						a = "No Attacks Available for Service"
+						l = terminal .. " ping " .. w[1]
+						table.insert( work, { service , {{ a , l }} } )
 					end
 				    end
 				    servcount = servcount + 1

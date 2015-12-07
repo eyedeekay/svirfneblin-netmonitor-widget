@@ -126,14 +126,8 @@ function mynetworkmap()
     return networkmenu
 end
 
-mynetworklauncher = awful.widget.launcher({ image = beautiful.awesome_icon,
-                                            menu = mynetworkmap()})
-netmaptimer = timer({ timeout = 360 })
-netmaptimer:connect_signal("timeout", function()
-        mynetworkmap = awful.widget.launcher({ image = beautiful.awesome_icon,
+mynetworkmapwidget = awful.widget.launcher({ image = beautiful.awesome_icon,
                                                 menu = mynetworkmap()})
-    end)
-netmaptimer:start()
 
 -- Create a textclock widget
 mytextclock = awful.widget.textclock()
@@ -217,7 +211,7 @@ for s = 1, screen.count() do
     -- Widgets that are aligned to the right
     local right_layout = wibox.layout.fixed.horizontal()
     if s == 1 then right_layout:add(wibox.widget.systray()) end
-    right_layout:add(mynetworklauncher)
+    right_layout:add(mynetworkmapwidget)
     right_layout:add(mytextclock)
     right_layout:add(mylayoutbox[s])
 
