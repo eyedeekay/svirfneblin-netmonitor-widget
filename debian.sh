@@ -5,6 +5,7 @@ SOURCEDIR=netmonitor/
 SOURCEBIN=netmonitor/boddy.lua
 IFACEBIN=nmap-auto-wrapper
 LIBFACE=monitor_functions/nmap-auto-functions
+EXPLOIT=exploits/http-dos.sh
 CONNBIN=nmap-auto-scanner
 EXPLBIN=exploit-auto-select
 SOURCEDOC=README.md
@@ -49,6 +50,7 @@ echo usr/bin/$IFACEBIN usr/bin >> debian/install
 echo usr/bin/$LIBFACE usr/bin/monitor_functions >> debian/install
 echo usr/bin/$CONNBIN usr/bin >> debian/install
 echo usr/bin/$EXPLBIN usr/bin >> debian/install
+echo usr/bin/$EXPLOIT usr/bin/exploits >> debian/install
 cp $SOURCEDOC usr/share/doc/$DEBFOLDER/$SOURCEDOC
 echo usr/share/doc/$DEBFOLDER/$SOURCEDOC usr/share/doc/$DEBFOLDER >> debian/install
 
