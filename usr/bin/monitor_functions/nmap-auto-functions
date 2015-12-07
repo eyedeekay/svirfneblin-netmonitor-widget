@@ -50,3 +50,10 @@ get_hostlist(){
 	done
 	echo $RETURN
 }
+
+host_scan(){
+	SCAN_IP="$1"
+	PRE_SPLIT_NMAP_IP=$(nmap "$SCAN_IP" | grep open)
+	POST_SPLIT_NMAP_IP=$( echo "$PRE_SPLIT_NMAP_IP" | tr "\n" ";" )
+	echo $POST_SPLIT_NMAP_IP
+}

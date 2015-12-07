@@ -1,5 +1,12 @@
 #! /bin/sh
 
-host_scan(){
-	
-}
+if [ -f ./monitor_functions/nmap-auto-functions ]; then
+	. ./monitor_functions/nmap-auto-functions
+else
+	. /usr/bin/monitor_functions/nmap-auto-functions
+fi
+
+#nmap "$1"
+NMAP_SCAN=$(host_scan "$1")
+
+echo $NMAP_SCAN

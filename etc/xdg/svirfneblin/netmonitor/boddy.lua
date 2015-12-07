@@ -10,7 +10,7 @@ local string = require("string")
 local table = require("table")
 
 local COMMAND_MAP_NETWORK = "nmap-auto-wrapper &"
-local COMMAND_SCAN_HOST = "nmap-auto-scanner &"
+local COMMAND_SCAN_HOST = "nmap-auto-scanner "
 
 module("netmntr")
 
@@ -62,19 +62,33 @@ function get_nearby_hosts()
     return result_array
 end
 
+function scan_a_host(ip)
+    local result = sanitize_program_output(get_program_output(COMMAND_SCAN_HOST .. ip))
+    local result_array = arrayfy_by_semicolon(result)
+    return result_array
+end
+
 function generate_widget_map()
 	local attached_hosts = {}
 	local count = 0
 	for key, host in pairs(get_nearby_hosts()) do
 		w = arrayfy_by_whitespace(host)
-		if host ~= "" then
-			if w[1] ~= nil then
-				work = terminal .. " ping -c 1 " .. w[1];
-			else
-				work = terminal .. " ping -c 1 duckduckgo.com"
+		work = {}
+		if w[1] ~= nil then
+			local scan_results = scan_a_host(w[1])
+			if scan_results ~= nil then
+				for ky, service in pairs(scan_results) do
+				    if service ~= nil then
+					l = terminal .. " ping -c 1 " .. w[1]
+--					naughty.notify({title=service, timeout=240, text=ky .. l})
+					table.insert( work, { service , l } )
+					device = { host, work }
+				    end
+				end
+				table.insert(attached_hosts, device)
 			end
-			device = {host, work}
-			table.insert(attached_hosts, device)
+		else
+			work = terminal .. " ping -c 1 duckduckgo.com"
 		end
 		count = count + 1
 	end

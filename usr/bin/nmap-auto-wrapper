@@ -1,4 +1,4 @@
-#! /bin/bash
+#! /bin/sh
 
 if [ -f ./monitor_functions/nmap-auto-functions ]; then
 	. ./monitor_functions/nmap-auto-functions
