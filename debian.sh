@@ -6,6 +6,7 @@ SOURCEBIN=netmonitor/boddy.lua
 IFACEBIN=nmap-auto-wrapper
 LIBFACE=monitor_functions/nmap-auto-functions
 CONNBIN=nmap-auto-scanner
+EXPLBIN=exploit-auto-select
 SOURCEDOC=README.md
 DEBFOLDER=svirfneblin-netmonitor-widget
 
@@ -47,6 +48,7 @@ echo etc/xdg/svirfneblin/$SOURCEBIN etc/xdg/svirfneblin/$SOURCEDIR >> debian/ins
 echo usr/bin/$IFACEBIN usr/bin >> debian/install
 echo usr/bin/$LIBFACE usr/bin/monitor_functions >> debian/install
 echo usr/bin/$CONNBIN usr/bin >> debian/install
+echo usr/bin/$EXPLBIN usr/bin >> debian/install
 cp $SOURCEDOC usr/share/doc/$DEBFOLDER/$SOURCEDOC
 echo usr/share/doc/$DEBFOLDER/$SOURCEDOC usr/share/doc/$DEBFOLDER >> debian/install
 
