@@ -10,6 +10,8 @@ EXPLOITLIB=exploits/http-cgi-testcgils.sh
 CONNBIN=nmap-auto-scanner
 EXPLBIN=exploit-auto-select
 SOURCEDOC=README.md
+INSTALLDOC=INSTALL.md
+HACKDOC=SCRIPTING.md
 DEBFOLDER=svirfneblin-netmonitor-widget
 
 DEBVERSION=$(date +%Y%m%d)
@@ -52,9 +54,13 @@ echo usr/bin/$LIBFACE usr/bin/monitor_functions >> debian/install
 echo usr/bin/$CONNBIN usr/bin >> debian/install
 echo usr/bin/$EXPLBIN usr/bin >> debian/install
 echo usr/bin/$EXPLOIT usr/bin/exploits >> debian/install
-echo usr/bin/$EXPLOIT usr/bin/exploits >> debian/install
+echo usr/bin/$EXPLOITLIB usr/bin/exploits >> debian/install
 cp $SOURCEDOC usr/share/doc/$DEBFOLDER/$SOURCEDOC
+cp $INSTALLDOC usr/share/doc/$DEBFOLDER/$INSTALLDOC
+cp $HACKDOC usr/share/doc/$DEBFOLDER/$HACKDOC
 echo usr/share/doc/$DEBFOLDER/$SOURCEDOC usr/share/doc/$DEBFOLDER >> debian/install
+echo usr/share/doc/$DEBFOLDER/$INSTALLDOC usr/share/doc/$DEBFOLDER >> debian/install
+echo usr/share/doc/$DEBFOLDER/$HACKDOC usr/share/doc/$DEBFOLDER >> debian/install
 
 echo "Source: $DEBFOLDER
 Section: unknown
