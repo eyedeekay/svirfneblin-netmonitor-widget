@@ -7,6 +7,6 @@ else
 fi
 
 #nmap "$1"
-NMAP_SCAN=$(host_scan "$1")
+NMAP_SCAN=$(host_scan "$1" &)
 
 echo $NMAP_SCAN
