@@ -1,3 +1,4 @@
+local awful = require("awful")
 local io = io
 local math = math
 local naughty = require("naughty")
@@ -142,4 +143,17 @@ function generate_widget_map()
 	end
 	table.remove(attached_hosts, count)
 	return attached_hosts
+end
+
+-- create a network map widget
+function mynetworkmap()
+    networkmonitor = awful.menu({	items = netmntr.generate_widget_map()	  })
+    return networkmonitor
+end
+
+-- create a network map launcher, useful for working with vicious widgets
+function updatenetworkmap()
+	mynetworkmapwidget = awful.widget.launcher({ image = beautiful.monitoring_icon,
+	                                            menu = mynetworkmap()})
+	return mynetworkmapwidget
 end
