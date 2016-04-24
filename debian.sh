@@ -16,7 +16,8 @@ DEBFOLDER=svirfneblin-netmonitor-widget
 
 DEBVERSION=$(date +%Y%m%d)
 
-cd "$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+TOME="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+cd $TOME
 
 git pull origin master
 
@@ -28,7 +29,7 @@ rm -rf $DEBFOLDERNAME
 mkdir $DEBFOLDERNAME
 
 # Copy your script to the source dir
-cp -R ./ $DEBFOLDERNAME/
+cp -R $TOME $DEBFOLDERNAME/
 cd $DEBFOLDERNAME
 
 pwd
