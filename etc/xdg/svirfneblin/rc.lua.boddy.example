@@ -122,21 +122,25 @@ menubar.utils.terminal = terminal -- Set the terminal for applications that requ
 
 -- create a network map widget
 function mynetworkmap()
-    networkmonitor = awful.menu({	items = netmntr.generate_widget_map()	  })
-    return networkmonitor
+    networkmonitormenu = awful.menu({   items = netmntr.generate_scan_menu() })
+    return networkmonitormenu
 end
 mynetworkmapwidget = awful.widget.launcher({ image = beautiful.network_icon, menu = awful.menu({ items = { { "s" , "s" }, { "s" , "s" }, } }) })
 function updatenetworkmap()
+        networkmonitor = awful.menu({	items = netmntr.generate_widget_map()	  })
 	mynetworkmapwidget = awful.widget.launcher({ image = beautiful.monitoring_icon,
-	                                            menu = mynetworkmap()})
+	                                            menu = networkmonitor})
 	return mynetworkmapwidget
 end
 --updatenetworkmap()
-mynetworkmapscanner = awful.widget.launcher( { image = beautiful.monitoring_icon , menu = awful.menu( {items = { { "scan hosts", "sv-nm-hosts" } } } ) } )
+mynetworkmapscanner = awful.widget.launcher( { image = beautiful.scan_icon , menu = mynetworkmap() } )
 
-vicious.register(mynetworkmapscanner, awful.widget.launcher, netmntr.generate_widget_data(), 240)
+myscantimer = timer({ timeout = 157 })
+myscantimer:connect_signal("timeout", function() netmntr.generate_widget_data() end)
+myscantimer:start()
+vicious.register(mynetworkmapscanner, awful.widget.launcher, mynetworkmap(), 11)
+vicious.register(mynetworkmapwidget, awful.widget.launcher, updatenetworkmap(), 67)
 
-vicious.register(mynetworkmapwidget, awful.widget.launcher, updatenetworkmap(), 30 )
 
 -- Create a textclock widget
 mytextclock = awful.widget.textclock()

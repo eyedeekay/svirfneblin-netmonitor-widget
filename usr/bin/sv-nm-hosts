@@ -4,6 +4,7 @@ if [ -f /usr/bin/monitor_functions/nmap-auto-functions ]; then
 	. /usr/bin/monitor_functions/nmap-auto-functions
 fi
 
-nohup sh -c "/usr/bin/monitor_functions/get_hostlist > $HOST_LIST.tmp && cp $HOST_LIST.tmp $HOST_LIST" &
+nohup /usr/bin/monitor_functions/get_hostlist > $HOST_LIST.tmp && mv $HOST_LIST.tmp $HOST_LIST &
+
 DATESTRING=$(date)
 echo "$DATESTRING" > $LAST_FIND

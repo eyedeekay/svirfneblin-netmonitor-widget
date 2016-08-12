@@ -4,6 +4,6 @@ if [ -f /usr/bin/monitor_functions/nmap-auto-functions ]; then
 	. /usr/bin/monitor_functions/nmap-auto-functions
 fi
 
-nohup sh -c "/usr/bin/monitor_functions/host_scan \"$1\" > $NMAP_SCAN$1.tmp && mv $NMAP_SCAN$1.tmp $NMAP_SCAN$1" &
+nohup /usr/bin/monitor_functions/host_scan "$1" > $NMAP_SCAN$1.tmp && mv $NMAP_SCAN$1.tmp $NMAP_SCAN$1 &
 DATESTRING=$(date)
 echo "$DATESTRING" > $LAST_SCAN

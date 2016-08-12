@@ -57,7 +57,7 @@ mv debian/rules.new debian/rules
 echo etc/xdg/svirfneblin/rc.lua.boddy.example etc/xdg/svirfneblin >> debian/install
 echo etc/xdg/svirfneblin/$SOURCEBIN etc/xdg/svirfneblin/$SOURCEDIR >> debian/install
 echo usr/bin/$IFACEBIN usr/bin >> debian/install
-echo usr/bin/$IFACEBINV usr/bin >> debian/instal
+echo usr/bin/$IFACEBINV usr/bin >> debian/install
 echo usr/bin/$LOGBINA usr/bin >> debian/install
 echo usr/bin/$LOGBINB usr/bin >> debian/install
 echo usr/bin/$LIBFACE usr/bin/monitor_functions >> debian/install

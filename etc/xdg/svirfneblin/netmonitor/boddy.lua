@@ -141,7 +141,7 @@ function generate_scan_menu()
         tt = "Last Local Port Scan Performed at " .. show_scanlog()
         r = {
             { t , "sv-nm-hosts" },
-            { tt , "sv-nm-last-scan"},
+            { tt , ""},
         }
         return r
 end
