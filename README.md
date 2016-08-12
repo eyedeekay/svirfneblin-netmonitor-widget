@@ -10,43 +10,46 @@ generate a menu for launching those scripts in a terminal under the enumerated
 services in the menu. It's not compatible with any existing vulnerability
 framework, but it shouldn't be particularly difficult to wrap your applications
 up in the exploits/ folder. An example script exploiting the shellshock
-vulnerability will be included as an example shortly.  
+vulnerability will be included as an example shortly.
 
 **Don't use this version unless you are interested in testing the features of**
-**the script.** It's not capable of updating the menu asynchronously yet which 
+**the script.** It's not capable of updating the menu asynchronously yet which
 means that it will take a long time for your window manager to start up, and
-you'll have to restart the window manager to refresh the menu.  
+you'll have to restart the window manager to refresh the menu.
 
         [X] Menu Generation
         [X] Service Scanning
         [X] Potential Exploit Scanning
         [x] Example Exploit(Untested)
-        [_] Asynchronous Updates
+        [/] Asynchronous Updates(Getting there. The scan and show functions are
+           now split. Call the scan function(sv-nm-hosts) from shell once, or
+           periodically with a cron job to get updates in the interface.) This
+           drastically reduces the startup lag.
         [_] Exploit Library
         [_] Custom Port Ranges
         [_] Service Scanning
 
-**For install documentation, see** [INSTALL](https://github.com/cmotc/svirfneblin-netmonitor-widget/blob/master/INSTALL.md)  
+**For install documentation, see** [INSTALL](https://github.com/cmotc/svirfneblin-netmonitor-widget/blob/master/INSTALL.md)
 
-**For documentation on extending with your own scripts, see** [SCRIPTING](https://github.com/cmotc/svirfneblin-netmonitor-widget/blob/master/INSTALL.md). This will be changing alot, fairly soon.  
+**For documentation on extending with your own scripts, see** [SCRIPTING](https://github.com/cmotc/svirfneblin-netmonitor-widget/blob/master/INSTALL.md). This will be changing alot, fairly soon.
 
 How it works:
 -------------
 It uses 3 wrapper scripts to turn data from the shell into lists that can be
 used to create hierarchical awesome menus and launchers. The code's not
-particularly concise yet, but it's pretty well labeled except in that one area.  
+particularly concise yet, but it's pretty well labeled except in that one area.
 
 ###Refreshing the Menu
 I wouldn't recommend setting a timer to automatically refresh the menu at an
 interval, as this version is not yet capable of doing so asynchronously and it
-will stall while the window manager while it's scanning your network.  
+will stall while the window manager while it's scanning your network.
 
 ###Menu Level 1: Computers Nearby
 This list is formulated by determining which networks you are connected to and
 guessing which IP ranges are being assigned by those networks, then scanning
 those ranges with nmap and organizing that data into the first level menu. This
 should be enough to discover all hosts on most SOHO networks and display them
-in the menu.  
+in the menu.
 
 ####Example Gateway in Menu Level 1 with Host Name:
 
@@ -61,7 +64,7 @@ in the menu.
         for 192.168.1.105 Host is up (0.0012s)
 
 I might add the capability to scan custom IP ranges soon too but for now it only
-scans the local network automatically.  
+scans the local network automatically.
 
 ###Menu Level 2: Service Scanning
 This list is formulated by scanning the running services on the discovered hosts

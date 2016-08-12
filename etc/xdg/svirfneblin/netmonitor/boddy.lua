@@ -1,4 +1,3 @@
-local awful = require("awful")
 local io = io
 local math = math
 local naughty = require("naughty")
@@ -10,9 +9,12 @@ local pairs = pairs
 local string = require("string")
 local table = require("table")
 
-local COMMAND_MAP_NETWORK = "nmap-auto-wrapper &"
-local COMMAND_SCAN_HOST = "nmap-auto-scanner "
-local COMMAND_EXPLOIT_AUTO = "exploit-auto-select"
+local COMMAND_MAP_NETWORK = "sv-nm-hosts "
+local COMMAND_SEE_MAP_NETWORK = "sv-nm-hosts-list "
+local COMMAND_SCAN_HOST = "sv-nm-scan-host "
+local COMMAND_SEE_SCAN_HOST = "sv-nm-scan-host-list "
+local COMMAND_EXPLOIT_AUTO = "sv-nm-expl-auto "
+local COMMAND_SEE_EXPLOIT_AUTO = "sv-nm-expl-auto-list "
 
 module("netmntr")
 
@@ -73,7 +75,13 @@ end
 
 function get_nearby_hosts()
     --Make a table of the local interfaces
-    local result_nmapped = sanitize_program_output(get_program_output(COMMAND_MAP_NETWORK))
+    local result_nmapped = sanitize_program_output(get_program_output(COMMAND_MAP_NETWORK .. " &"))
+    local result_array = arrayfy_by_semicolon(result_nmapped)
+    return result_array
+end
+
+function show_nearby_hosts()
+    local result_nmapped = sanitize_program_output(get_program_output(COMMAND_SEE_MAP_NETWORK))
     local result_array = arrayfy_by_semicolon(result_nmapped)
     return result_array
 end
@@ -84,20 +92,44 @@ function enumerate_potential_attacks(ip, port, svc)
     return result_array
 end
 
+function show_potential_attacks(ip, port, svc)
+    local result_exploits = sanitize_program_output(get_program_output(COMMAND_SEE_EXPLOIT_AUTO .. " " .. ip .. " " .. port .. " " .. svc))
+    local result_array = arrayfy_by_semicolon(result_exploits)
+    return result_array
+end
+
 function scan_a_host(ip)
     local result = sanitize_program_output(get_program_output(COMMAND_SCAN_HOST .. ip .. " &"))
     local result_array = arrayfy_by_semicolon(result)
     return result_array
 end
 
+function show_a_host(ip)
+    local result = sanitize_program_output(get_program_output(COMMAND_SEE_SCAN_HOST .. " " .. ip))
+    local result_array = arrayfy_by_semicolon(result)
+    return result_array
+end
+
+function generate_widget_data()
+	local attached_hosts = {}
+	local count = 0
+	for key, host in pairs(show_nearby_hosts()) do
+		w = arrayfy_by_whitespace(host)
+		work = {}
+                if w[1] ~= nil then
+                        scan_a_host(w[1])
+                end
+        end
+end
+
 function generate_widget_map()
 	local attached_hosts = {}
 	local count = 0
-	for key, host in pairs(get_nearby_hosts()) do
+	for key, host in pairs(show_nearby_hosts()) do
 		w = arrayfy_by_whitespace(host)
 		work = {}
 		if w[1] ~= nil then
-			local scan_results = scan_a_host(w[1])
+			local scan_results = show_a_host(w[1])
 			if scan_results ~= nil then
 				local servcount = 0
 				for ky, service in pairs(scan_results) do
@@ -117,7 +149,6 @@ function generate_widget_map()
 								if c[3] ~= nil then
 									table.insert(m, { c[1] , c[3] .. " " .. c[2] } )
 								end
---								l = terminal .. COMMAND_EXPLOIT_AUTO .. w[1] .. " " .. q[1] .. " " .. q[2]
 							end
 						end
 					end
@@ -141,19 +172,6 @@ function generate_widget_map()
 		end
 		count = count + 1
 	end
-	table.remove(attached_hosts, count)
+--	table.remove(attached_hosts, count)
 	return attached_hosts
-end
-
--- create a network map widget
-function mynetworkmap()
-    networkmonitor = awful.menu({	items = netmntr.generate_widget_map()	  })
-    return networkmonitor
-end
-
--- create a network map launcher, useful for working with vicious widgets
-function updatenetworkmap()
-	mynetworkmapwidget = awful.widget.launcher({ image = beautiful.monitoring_icon,
-	                                            menu = mynetworkmap()})
-	return mynetworkmapwidget
 end

@@ -120,14 +120,23 @@ menubar.utils.terminal = terminal -- Set the terminal for applications that requ
 
 -- {{{ Wibox
 
--- create a network menu widget
+-- create a network map widget
 function mynetworkmap()
-    networkmenu = awful.menu({	items = netmntr.generate_widget_map()	  })
-    return networkmenu
+    networkmonitor = awful.menu({	items = netmntr.generate_widget_map()	  })
+    return networkmonitor
 end
+mynetworkmapwidget = awful.widget.launcher({ image = beautiful.network_icon, menu = awful.menu({ items = { { "s" , "s" }, { "s" , "s" }, } }) })
+function updatenetworkmap()
+	mynetworkmapwidget = awful.widget.launcher({ image = beautiful.monitoring_icon,
+	                                            menu = mynetworkmap()})
+	return mynetworkmapwidget
+end
+--updatenetworkmap()
+mynetworkmapscanner = awful.widget.launcher( { image = beautiful.monitoring_icon , menu = awful.menu( {items = { { "scan hosts", "sv-nm-hosts" } } } ) } )
 
-mynetworkmapwidget = awful.widget.launcher({ image = beautiful.awesome_icon,
-                                                menu = mynetworkmap()})
+vicious.register(mynetworkmapscanner, awful.widget.launcher, netmntr.generate_widget_data(), 240)
+
+vicious.register(mynetworkmapwidget, awful.widget.launcher, updatenetworkmap(), 30 )
 
 -- Create a textclock widget
 mytextclock = awful.widget.textclock()

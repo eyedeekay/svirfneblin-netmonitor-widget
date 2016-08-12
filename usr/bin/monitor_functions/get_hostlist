@@ -1,0 +1,41 @@
+#! /bin/sh
+
+if [ -f ./monitor_functions/nmap-auto-functions ]; then
+	. ./nmap-auto-functions
+else
+	. /usr/bin/monitor_functions/nmap-auto-functions
+fi
+
+SCAN_RANGE=$(/usr/bin/monitor_functions/get_range)
+
+TMP_NMAP_RESULT=$(nmap -sn $SCAN_RANGE)
+SPLIT_TMP_NMAP_RESULT=$(echo $TMP_NMAP_RESULT | tr "H" "H")
+RETURN=""
+c=0
+for sub in $SPLIT_TMP_NMAP_RESULT; do
+	RETURN="$RETURN:$sub"
+	[ $c -gt 8 ] && c=-1 && RETURN="$RETURN;"
+	c=$((c+1))
+done
+SPLIT_NMAP_HOSTONLY=$(echo $RETURN | tr ";" "\n")
+RETURN=""
+c=0
+for sub in $SPLIT_NMAP_HOSTONLY; do
+	[ $c -gt 0 ] && RETURN="$RETURN;$sub"
+	c=$((c+1))
+done
+SPLIT_NMAP_HOSTONLY=$(echo $RETURN | tr ";" "\n")
+RETURN=""
+for sub in $SPLIT_NMAP_HOSTONLY; do
+	x=0
+	if [ $c -gt 3 ]; then
+		SPLIT_FINAL=$(echo $sub | tr ":" "\n")
+		for subsub in $SPLIT_FINAL; do
+			[ $x -gt 3 ] && RETURN="$RETURN $subsub" && [ $x -gt 8 ] && x=-1
+			x=$((x+1))
+		done
+		RETURN="$RETURN;"
+	fi
+	c=$((c-1))
+done
+echo $RETURN

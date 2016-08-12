@@ -1,0 +1,9 @@
+#! /bin/sh
+
+if [ -f ./monitor_functions/nmap-auto-functions ]; then
+	. ./monitor_functions/nmap-auto-functions
+else
+	. /usr/bin/monitor_functions/nmap-auto-functions
+fi
+
+nohup /usr/bin/monitor_functions/host_scan "$1" > $NMAP_SCAN$1 &

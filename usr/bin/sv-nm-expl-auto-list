@@ -1,0 +1,24 @@
+#! /bin/sh
+
+EXPLOIT_FIELD=""
+RETURN_FIELD=""
+if [ -d /usr/bin/exploits ]; then
+	cd /usr/bin/exploits
+	EXPLOIT_FIELD=$(\ls | grep "$3")
+	for d in $EXPLOIT_FIELD; do
+		. "./$d"
+		RETURN_FIELD="$RETURN_FIELD;$EXPLOIT_NAME $EXPLOIT_FIRE /usr/bin/exploits/$d"
+		cd /usr/bin/exploits
+	done
+fi
+if [ -d $HOME/.bin/exploits ]; then
+	cd $HOME/.bin/exploits
+	EXPLOIT_FIELD=$(\ls | grep "$3")
+	for d in $EXPLOIT_FIELD; do
+		. "./$d"
+		RETURN_FIELD="$RETURN_FIELD;$EXPLOIT_NAME $EXPLOIT_FIRE $HOME/.bin/exploits/$d"
+		cd $HOME/.bin/exploits
+	done
+fi
+
+echo $RETURN_FIELD

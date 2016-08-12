@@ -3,12 +3,18 @@
 SOURCEBINPATH=.
 SOURCEDIR=netmonitor/
 SOURCEBIN=netmonitor/boddy.lua
-IFACEBIN=nmap-auto-wrapper
+IFACEBIN=sv-nm-hosts
+IFACEBINV=sv-nm-hosts-list
 LIBFACE=monitor_functions/nmap-auto-functions
+LIBLIST=monitor_functions/get_hostlist
+LIBRANGE=monitor_functions/get_range
+LIBSCAN=monitor_functions/host_scan
 EXPLOIT=exploits/http-cgi-shellshock.sh
 EXPLOITLIB=exploits/http-cgi-testcgils.sh
-CONNBIN=nmap-auto-scanner
-EXPLBIN=exploit-auto-select
+CONNBIN=sv-nm-scan-host
+CONNBINV=sv-nm-scan-host-list
+EXPLBIN=sv-nm-expl-auto
+EXPLBIN=sv-nm-expl-auto-list
 SOURCEDOC=README.md
 INSTALLDOC=INSTALL.md
 HACKDOC=SCRIPTING.md
@@ -49,14 +55,17 @@ mv debian/rules.new debian/rules
 echo etc/xdg/svirfneblin/rc.lua.boddy.example etc/xdg/svirfneblin >> debian/install
 echo etc/xdg/svirfneblin/$SOURCEBIN etc/xdg/svirfneblin/$SOURCEDIR >> debian/install
 echo usr/bin/$IFACEBIN usr/bin >> debian/install
+echo usr/bin/$IFACEBINV usr/bin >> debian/install
 echo usr/bin/$LIBFACE usr/bin/monitor_functions >> debian/install
+echo usr/bin/$LIBRANGE usr/bin/monitor_functions >> debian/install
+echo usr/bin/$LIBLIST usr/bin/monitor_functions >> debian/install
+echo usr/bin/$LIBSCAN usr/bin/monitor_functions >> debian/install
 echo usr/bin/$CONNBIN usr/bin >> debian/install
+echo usr/bin/$CONNBINV usr/bin >> debian/install
 echo usr/bin/$EXPLBIN usr/bin >> debian/install
+echo usr/bin/$EXPLBINV usr/bin >> debian/install
 echo usr/bin/$EXPLOIT usr/bin/exploits >> debian/install
 echo usr/bin/$EXPLOITLIB usr/bin/exploits >> debian/install
-cp $SOURCEDOC usr/share/doc/$DEBFOLDER/$SOURCEDOC
-cp $INSTALLDOC usr/share/doc/$DEBFOLDER/$INSTALLDOC
-cp $HACKDOC usr/share/doc/$DEBFOLDER/$HACKDOC
 echo usr/share/doc/$DEBFOLDER/$SOURCEDOC usr/share/doc/$DEBFOLDER >> debian/install
 echo usr/share/doc/$DEBFOLDER/$INSTALLDOC usr/share/doc/$DEBFOLDER >> debian/install
 echo usr/share/doc/$DEBFOLDER/$HACKDOC usr/share/doc/$DEBFOLDER >> debian/install
@@ -64,7 +73,7 @@ echo usr/share/doc/$DEBFOLDER/$HACKDOC usr/share/doc/$DEBFOLDER >> debian/instal
 echo "Source: $DEBFOLDER
 Section: unknown
 Priority: optional
-Maintainer: cmotc <cmotc@openmailbox.org>
+Maintainer: idk <eyedeekay@i2pmail.org>
 Build-Depends: debhelper (>= 9)
 Standards-Version: 3.9.5
 Homepage: https://www.github.com/cmotc/svirfneblin-netmonitor-widget
@@ -73,8 +82,8 @@ Homepage: https://www.github.com/cmotc/svirfneblin-netmonitor-widget
 
 Package: $DEBFOLDER
 Architecture: all
-Depends: lightdm, lightdm-gtk-greeter, awesome (>= 3.4), svirfneblin-panel \${misc:Depends}
-Description: A network monitoring widget for awesomewm
+Depends: awesome (>= 3.4), svirfneblin-panel \${misc:Depends}
+Description: A network monitoring widget for awesomewm.
 " > debian/control
 
 #echo "gsettings set org.gnome.desktop.session session-name awesome-gnome

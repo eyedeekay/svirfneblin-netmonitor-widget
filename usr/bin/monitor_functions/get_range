@@ -1,0 +1,31 @@
+#! /bin/sh
+
+if [ -f ./monitor_functions/nmap-auto-functions ]; then
+	. ./nmap-auto-functions
+else
+	. /usr/bin/monitor_functions/nmap-auto-functions
+fi
+
+MY_IP=$(bash -c "hostname -I")
+RETURN=" "
+SPLIT_IP=$(echo $MY_IP | tr "$RETURN" "\n")
+c=0
+for sub in $SPLIT_IP; do
+	SPLIT_SPLIT_IP=$(echo $sub | tr "." "\n")
+	c=1
+	for subsub in $SPLIT_SPLIT_IP; do
+		if [ $c -lt 4 ]; then
+			if [ $c -gt 1 ]; then
+				PERIOD="."
+			else
+				PERIOD=""
+			fi
+			RETURN="$RETURN$PERIOD$subsub"
+		else
+			RETURN="$RETURN"'.*'
+		fi
+		c=$((c+1))
+	done
+	RETURN="$RETURN "
+done
+echo "$RETURN"

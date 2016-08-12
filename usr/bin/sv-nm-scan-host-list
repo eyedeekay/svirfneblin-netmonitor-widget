@@ -6,7 +6,4 @@ else
 	. /usr/bin/monitor_functions/nmap-auto-functions
 fi
 
-SCAN_RANGE=$(get_range &)
-NMAP_RESULT=$(get_hostlist &)
-
-echo " $NMAP_RESULT"
+cat $NMAP_SCAN$1
