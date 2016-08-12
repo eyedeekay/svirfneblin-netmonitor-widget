@@ -1,12 +1,12 @@
 #! /bin/sh
 
-NETMONDIR="$HOME/.local/networkmonitor/"
+export NETMONDIR="$HOME/.local/networkmonitor"
 
-if [ -d $NETMONDIR/ ]; then
-        HOST_LIST=$NETMONDIR/host-list
-        NMAP_SCAN=$NETMONDIR/nmap-scan
-else
+if [ ! -d $NETMONDIR ]; then
         mkdir -p $NETMONDIR
-        HOST_LIST=$NETMONDIR/host-list
-        NMAP_SCAN=$NETMONDIR/nmap-scan
 fi
+
+export HOST_LIST=$NETMONDIR/host-list
+export NMAP_SCAN=$NETMONDIR/nmap-scan
+export LAST_FIND=$NETMONDIR/last-find
+export LAST_SCAN=$NETMONDIR/last-scan

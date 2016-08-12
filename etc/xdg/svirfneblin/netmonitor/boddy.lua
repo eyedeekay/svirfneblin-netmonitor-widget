@@ -15,6 +15,8 @@ local COMMAND_SCAN_HOST = "sv-nm-scan-host "
 local COMMAND_SEE_SCAN_HOST = "sv-nm-scan-host-list "
 local COMMAND_EXPLOIT_AUTO = "sv-nm-expl-auto "
 local COMMAND_SEE_EXPLOIT_AUTO = "sv-nm-expl-auto-list "
+local COMMAND_SHOW_LAST_SCAN = "sv-nm-last-scan "
+local COMMAND_SHOW_LAST_DISCOVERY = "sv-nm-last-find "
 
 module("netmntr")
 
@@ -110,6 +112,18 @@ function show_a_host(ip)
     return result_array
 end
 
+function show_scanlog()
+    local result_logged = sanitize_program_output(get_program_output(COMMAND_SHOW_LAST_SCAN))
+    local result_array = arrayfy_by_semicolon(result_logged)
+    return result_array
+end
+
+function show_seeklog()
+    local result_logged = sanitize_program_output(get_program_output(COMMAND_SHOW_LAST_DISCOVERY))
+    local result_array = arrayfy_by_semicolon(result_logged)
+    return result_array
+end
+
 function generate_widget_data()
 	local attached_hosts = {}
 	local count = 0
@@ -120,6 +134,16 @@ function generate_widget_data()
                         scan_a_host(w[1])
                 end
         end
+end
+
+function generate_scan_menu()
+        t = "Last Local Discovery Scan Performed at " .. show_seeklog()
+        tt = "Last Local Port Scan Performed at " .. show_scanlog()
+        r = {
+            { t , "sv-nm-hosts" },
+            { tt , "sv-nm-last-scan"},
+        }
+        return r
 end
 
 function generate_widget_map()

@@ -1,8 +1,6 @@
 #! /bin/sh
 
-if [ -f ./monitor_functions/nmap-auto-functions ]; then
-	. ./monitor_functions/nmap-auto-functions
-else
+if [ -f /usr/bin/monitor_functions/nmap-auto-functions ]; then
 	. /usr/bin/monitor_functions/nmap-auto-functions
 fi
 

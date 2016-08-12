@@ -4,4 +4,4 @@ if [ -f /usr/bin/monitor_functions/nmap-auto-functions ]; then
 	. /usr/bin/monitor_functions/nmap-auto-functions
 fi
 
-cat $HOST_LIST
+cat $LAST_FIND
